@@ -1,7 +1,7 @@
 # Telegram Message Sender
 
 Simple automatic message sender for telegram. Used tg web version and Selenium with firefox driver.  
-Version: **v.1.0**
+Version: **v.1.1**
 
 ## Install
 #### Linux
@@ -16,12 +16,15 @@ Resources folder had a 3 files,which can be changed.
 #### application.properties
 
  timeout - time between change message dir(rise up if you have a bad internet connection).  
- firefoxprofile - name of your Profile in Mozilla FireFox.
+ firefoxprofile - name of your Profile in Mozilla FireFox.  
+ accountgenerator - if is true accounts will be generated automaticly, if false taken by accounts file
  
 | Setting | default | 
 |----------------|:---------:|
 | timeout | 15 | 
 | firefoxprofile | default-release | 
+| accountgenerator | true |
+
  
  #### accounts
  File should contains only accounts by '@' + acc.name. Every account must be write in next line.  
