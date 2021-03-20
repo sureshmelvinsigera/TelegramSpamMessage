@@ -8,6 +8,15 @@ public class User {
     private String fireFoxProfile;
     private String message;
     private List<String> accounts;
+    private boolean accountGenerator;
+
+    public boolean isAccountGenerator() {
+        return accountGenerator;
+    }
+
+    public void setAccountGenerator(boolean accountGenerator) {
+        this.accountGenerator = accountGenerator;
+    }
 
     public String getMessage() {
         return message;

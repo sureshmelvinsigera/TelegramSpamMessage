@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class SetProperties {
 
@@ -38,12 +40,19 @@ public class SetProperties {
             if (line.contains("firefoxprofile=")) {
                 user.setFireFoxProfile(line.replaceAll("firefoxprofile=", ""));
             }
+            if (line.contains("accountgenerator=")) {
+                user.setAccountGenerator(Boolean.parseBoolean(line.replaceAll("firefoxprofile=", "")));
+            }
         }
-        reader = new BufferedReader(new InputStreamReader(accountsStream));
-        while ((line = reader.readLine()) != null) {
-            accounts.add(line);
+        if (user.isAccountGenerator()) {
+            user.setAccounts(accountGenerator());
+        } else {
+            reader = new BufferedReader(new InputStreamReader(accountsStream));
+            while ((line = reader.readLine()) != null) {
+                accounts.add(line);
+            }
+            user.setAccounts(accounts);
         }
-        user.setAccounts(accounts);
         reader = new BufferedReader(new InputStreamReader(messageStream));
         user.setMessage("");
         while ((line = reader.readLine()) != null) {
@@ -51,6 +60,23 @@ public class SetProperties {
         }
     }
 
+    private List accountGenerator() {
+        ArrayList<String> list = new ArrayList<>();
+        int leftLimit = 97;
+        int rightLimit = 122;
+        int targetStringLength = 8;
+        Random random = new Random();
+        for (int x = 1; x <= 100; x++) {
+            StringBuilder buffer = new StringBuilder(targetStringLength);
+            for (int i = 0; i < targetStringLength; i++) {
+                int randomLimitedInt = leftLimit + (int)
+                        (random.nextFloat() * (rightLimit - leftLimit + 1));
+                buffer.append((char) randomLimitedInt);
+            }
+            list.add("@" + buffer.toString());
+        }
+        return list;
+    }
 //    public void show() {
 //        System.out.println(user.getTimeout());
 //        System.out.println(user.getMessage());
