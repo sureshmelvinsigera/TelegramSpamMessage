@@ -41,7 +41,7 @@ public class SetProperties {
                 user.setFireFoxProfile(line.replaceAll("firefoxprofile=", ""));
             }
             if (line.contains("accountgenerator=")) {
-                user.setAccountGenerator(Boolean.parseBoolean(line.replaceAll("firefoxprofile=", "")));
+                user.setAccountGenerator(Boolean.parseBoolean(line.replaceAll("accountgenerator=", "")));
             }
         }
         if (user.isAccountGenerator()) {
@@ -66,7 +66,7 @@ public class SetProperties {
         int rightLimit = 122;
         int targetStringLength = 8;
         Random random = new Random();
-        for (int x = 1; x <= 100; x++) {
+        for (int x = 1; x <= 50; x++) {
             StringBuilder buffer = new StringBuilder(targetStringLength);
             for (int i = 0; i < targetStringLength; i++) {
                 int randomLimitedInt = leftLimit + (int)
