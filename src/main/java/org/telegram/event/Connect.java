@@ -10,6 +10,10 @@ import org.openqa.selenium.firefox.ProfilesIni;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class Connect extends SetProperties {
 
     ProfilesIni profilesIni;
@@ -41,17 +45,27 @@ public class Connect extends SetProperties {
                     WebElement messageBlock = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='composer_rich_textarea']")));
                     messageBlock.clear();
                     messageBlock.sendKeys(user.getMessage());
-                } catch (Exception e) {
-                    continue;
-                }
-                try {
-                    WebElement sendButton = firefoxDriver.findElement(By.cssSelector("button[class='btn btn-md im_submit im_submit_send']"));
-                    sendButton.click();
+                    writeAcceptedAccounts(user.getAccounts().get(i));
+                    try {
+                        WebElement sendButton = firefoxDriver.findElement(By.cssSelector("button[class='btn btn-md im_submit im_submit_send']"));
+                        sendButton.click();
+                    } catch (Exception e) {
+                        continue;
+                    }
                 } catch (Exception e) {
                     continue;
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeAcceptedAccounts(String account) {
+        try {
+            PrintWriter printWriter = new PrintWriter(new File("acceptedAccounts"));
+            printWriter.write(account + "/n");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

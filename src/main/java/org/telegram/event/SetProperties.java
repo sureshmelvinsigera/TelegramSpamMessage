@@ -77,11 +77,4 @@ public class SetProperties {
         }
         return list;
     }
-//    public void show() {
-//        System.out.println(user.getTimeout());
-//        System.out.println(user.getMessage());
-//        System.out.println(user.getFireFoxProfile());
-//        System.out.println(user.getAccounts());
-//    }
-
 }
