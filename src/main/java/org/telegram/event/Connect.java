@@ -62,8 +62,7 @@ public class Connect extends SetProperties {
     }
 
     private void writeAcceptedAccounts(String account) {
-        try {
-            PrintWriter printWriter = new PrintWriter(new File("acceptedAccounts"));
+        try (PrintWriter printWriter = new PrintWriter(new File("acceptedAccounts"));){
             printWriter.write(account + "/n");
         } catch (IOException e) {
             e.printStackTrace();
