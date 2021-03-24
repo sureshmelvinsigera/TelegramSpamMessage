@@ -1,38 +1,8 @@
 package org.telegram.model;
 
-import java.util.List;
-
 public class User {
     private int userId;
-    private int timeout;
-    private String fireFoxProfile;
-    private String message;
-    private List<String> accounts;
-    private boolean accountGenerator;
-
-    public boolean isAccountGenerator() {
-        return accountGenerator;
-    }
-
-    public void setAccountGenerator(boolean accountGenerator) {
-        this.accountGenerator = accountGenerator;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<String> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<String> accounts) {
-        this.accounts = accounts;
-    }
+    private Settings settings;
 
     public int getUserId() {
         return userId;
@@ -42,19 +12,11 @@ public class User {
         this.userId = userId;
     }
 
-    public int getTimeout() {
-        return timeout;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
-
-    public String getFireFoxProfile() {
-        return fireFoxProfile;
-    }
-
-    public void setFireFoxProfile(String fireFoxProfile) {
-        this.fireFoxProfile = fireFoxProfile;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

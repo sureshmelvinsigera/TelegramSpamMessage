@@ -1,16 +1,15 @@
 package org.telegram.service;
 
-import org.telegram.event.Connect;
+import org.telegram.controller.ConnectionController;
 
 public class Service {
 
-    public void buildProject() throws InterruptedException {
-            Connect connect = new Connect();
-            connect.loadProperties();
-            connect.setDrivers();
-            connect.onSite();
-            connect.sendMessage();
+    public void buildProject() {
+        ConnectionController connectionController = new ConnectionController();
+        connectionController.getConnectionTG();
+        connectionController.setDrivers();
+        connectionController.onSite();
+        connectionController.sendMessage();
     }
-
 
 }

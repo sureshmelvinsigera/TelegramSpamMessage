@@ -1,6 +1,6 @@
-package org.telegram.event;
+package org.telegram.controller;
 
-import org.telegram.model.User;
+import org.telegram.model.Settings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SetProperties {
-
-    User user = new User();
+public class SettingsController {
 
     InputStream propertiesStream;
     InputStream messageStream;
     InputStream accountsStream;
 
-    public void loadProperties() {
+    Settings settings = new Settings();
+
+    public Settings loadProperties() {
         try {
             propertiesStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
             messageStream = this.getClass().getClassLoader().getResourceAsStream("message");
@@ -27,6 +27,7 @@ public class SetProperties {
         } catch (Exception e) {
             System.out.println("Couldn't load a file: " + e.getMessage());
         }
+        return settings;
     }
 
     private void setPropertiesStream(InputStream propertiesStream, InputStream accountsStream, InputStream messageStream) throws IOException {
@@ -35,28 +36,28 @@ public class SetProperties {
         String line;
         while ((line = reader.readLine()) != null) {
             if (line.contains("timeout=")) {
-                user.setTimeout(Integer.parseInt(line.replaceAll("timeout=", "")));
+                settings.setTimeout(Integer.parseInt(line.replaceAll("timeout=", "")));
             }
             if (line.contains("firefoxprofile=")) {
-                user.setFireFoxProfile(line.replaceAll("firefoxprofile=", ""));
+                settings.setFireFoxProfile(line.replaceAll("firefoxprofile=", ""));
             }
             if (line.contains("accountgenerator=")) {
-                user.setAccountGenerator(Boolean.parseBoolean(line.replaceAll("accountgenerator=", "")));
+                settings.setAccountGenerator(Boolean.parseBoolean(line.replaceAll("accountgenerator=", "")));
             }
         }
-        if (user.isAccountGenerator()) {
-            user.setAccounts(accountGenerator());
+        if (settings.isAccountGenerator()) {
+            settings.setAccounts(accountGenerator());
         } else {
             reader = new BufferedReader(new InputStreamReader(accountsStream));
             while ((line = reader.readLine()) != null) {
                 accounts.add(line);
             }
-            user.setAccounts(accounts);
+            settings.setAccounts(accounts);
         }
         reader = new BufferedReader(new InputStreamReader(messageStream));
-        user.setMessage("");
+        settings.setMessage("");
         while ((line = reader.readLine()) != null) {
-            user.setMessage(user.getMessage() + line);
+            settings.setMessage(settings.getMessage() + line);
         }
     }
 
@@ -77,5 +78,4 @@ public class SetProperties {
         }
         return list;
     }
-
 }
