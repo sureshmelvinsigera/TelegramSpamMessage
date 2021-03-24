@@ -1,7 +1,7 @@
 # Telegram Message Sender
 
 Simple automatic message sender for telegram. Used tg web version and Selenium with firefox driver.  
-Version: **v.1.1**
+Version: **v.1.2**
 
 ## Install
 #### Linux
