@@ -77,4 +77,5 @@ public class SetProperties {
         }
         return list;
     }
+
 }

@@ -1,6 +1,7 @@
 package org.telegram.event;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,15 +12,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Connect extends SetProperties {
 
-    ProfilesIni profilesIni;
-    FirefoxProfile firefoxProfile;
-    FirefoxOptions firefoxOptions;
-    WebDriver firefoxDriver;
+    public ProfilesIni profilesIni;
+    public FirefoxProfile firefoxProfile;
+    public FirefoxOptions firefoxOptions;
+    public WebDriver firefoxDriver;
 
     public void setDrivers() {
         profilesIni = new ProfilesIni();
@@ -41,19 +43,17 @@ public class Connect extends SetProperties {
             for (int i = 0; i < user.getAccounts().size(); i++) {
                 firefoxDriver.get("https://web.telegram.org/#/im?p=" + user.getAccounts().get(i));
                 WebDriverWait wait = new WebDriverWait(firefoxDriver, user.getTimeout());
+                WebElement messageBlock = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='composer_rich_textarea']")));
                 try {
-                    WebElement messageBlock = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='composer_rich_textarea']")));
+                    WebElement errorBlock = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='error_modal_wrap md_simple_modal_wrap']")));
+                    WebElement sendButton = firefoxDriver.findElement(By.cssSelector("button[class='btn btn-md btn-md-primary']"));
+                    sendButton.click();
+                } catch (TimeoutException e) {
                     messageBlock.clear();
                     messageBlock.sendKeys(user.getMessage());
                     writeAcceptedAccounts(user.getAccounts().get(i));
-                    try {
-                        WebElement sendButton = firefoxDriver.findElement(By.cssSelector("button[class='btn btn-md im_submit im_submit_send']"));
-                        sendButton.click();
-                    } catch (Exception e) {
-                        continue;
-                    }
-                } catch (Exception e) {
-                    continue;
+                    WebElement sendButton = firefoxDriver.findElement(By.cssSelector("button[class='btn btn-md im_submit im_submit_send']"));
+                    sendButton.click();
                 }
             }
         } catch (Exception e) {
@@ -62,8 +62,8 @@ public class Connect extends SetProperties {
     }
 
     private void writeAcceptedAccounts(String account) {
-        try (PrintWriter printWriter = new PrintWriter(new File("acceptedAccounts"));){
-            printWriter.write(account + "/n");
+        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream("/home/wilyr/IdeaProjects/TelegramMessageSpammer/src/main/resources/acceptedAccounts", true))) {
+            printWriter.write(account + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
